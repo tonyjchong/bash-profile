@@ -5,10 +5,10 @@ export KOPS_FEATURE_FLAGS=
 #export AWS_PROFILE=
 #export NAME=sandbox01.k8s.local
 
+
+# Colors
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
-
-
 export BASH_BLACK="\[\033[0;30m\]"
 export BASH_BLACKBOLD="\[\033[1;30m\]"
 export BASH_RED="\[\033[0;31m\]"
@@ -27,7 +27,14 @@ export BASH_WHITE="\[\033[0;37m\]"
 export BASH_WHITEBOLD="\[\033[1;37m\]"
 export BASH_RESETCOLOR="\[\e[00m\]"
 
+# Aliases
+alias docs='cd ~/Documents'
+alias gh='cd ~/Documents/github'
+alias ngh='cd ~/Documents/notmyGithub'
+alias lx='ls -ltha'
 
+
+# Kubernetes stuff
 source <(kubectl completion bash)
 source <(kops completion bash)
 if [ -f $(brew --prefix)/etc/bash_completion ]; then 
@@ -40,13 +47,17 @@ __kube_ps1()
     CONTEXT=$(cat ~/.kube/config | grep "current-context:" | sed "s/current-context: //")
 
     if [ -n "$CONTEXT" ]; then
-        echo "${CONTEXT}"
+        echo "(${CONTEXT})"
     fi
 }
 
+
+# Git stuff
 parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
+
+# Prompt
 export PS1="$BASH_REDBOLD\t ${BASH_BLUE}\u@\h ${BASH_PURPLE}branch:\$(parse_git_branch) ${BASH_YELLOW}kube-context:\$(__kube_ps1)\n${BASH_WHITEBOLD}\w${BASH_RESETCOLOR}$ "
-PATH="/usr/local/opt/curl/bin:/Users/tonychong/istio-1.5.4/bin:$PATH"
+PATH="/usr/local/opt/curl/bin:~/istio-1.5.4/bin:$PATH"
