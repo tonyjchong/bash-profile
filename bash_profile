@@ -48,5 +48,5 @@ parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
-export PS1="$BASH_REDBOLD\t ${BASH_BLUE}\u@\h ${BASH_PURPLE}branch:\$(parse_git_branch) ${BASH_YELLOW}kube-context:\$(__kube_ps1)\n${BASH_WHITEBOLD}./\W${BASH_RESETCOLOR}$ "
+export PS1="$BASH_REDBOLD\t ${BASH_BLUE}\u@\h ${BASH_PURPLE}branch:\$(parse_git_branch) ${BASH_YELLOW}kube-context:\$(__kube_ps1)\n${BASH_WHITEBOLD}./\w${BASH_RESETCOLOR}$ "
 PATH="/usr/local/opt/curl/bin:/Users/tonychong/istio-1.5.4/bin:$PATH"
