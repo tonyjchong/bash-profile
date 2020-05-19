@@ -40,7 +40,7 @@ __kube_ps1()
     CONTEXT=$(cat ~/.kube/config | grep "current-context:" | sed "s/current-context: //")
 
     if [ -n "$CONTEXT" ]; then
-        echo "(k8s: ${CONTEXT})"
+        echo "${CONTEXT}"
     fi
 }
 
