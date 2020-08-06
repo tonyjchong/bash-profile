@@ -1,10 +1,11 @@
+export KOPS_STATE_STORE=
 #export KOPS_STATE_STORE=
-export KOPS_FEATURE_FLAGS=
-#export AWS_ACCESS_KEY_ID=
-#export AWS_SECRET_ACCESS_KEY=
+export KOPS_FEATURE_FLAGS=EnableExternalCloudController
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
 #export AWS_PROFILE=
-#export NAME=sandbox01.k8s.local
-
+export KOPS_CLUSTER_NAME=
+#export KOPS_CLUSTER_NAME=
 
 # Colors
 export CLICOLOR=1
@@ -27,17 +28,26 @@ export BASH_WHITE="\[\033[0;37m\]"
 export BASH_WHITEBOLD="\[\033[1;37m\]"
 export BASH_RESETCOLOR="\[\e[00m\]"
 
+
+
 # Aliases
 alias docs='cd ~/Documents'
 alias gh='cd ~/Documents/github'
 alias ngh='cd ~/Documents/notmyGithub'
 alias lx='ls -ltha'
-
-
+alias python=/usr/local/bin/python3
+alias kiali='while true; do kubectl -n monitoring port-forward svc/kiali 20001:20001; done'
+alias jaeger='while true; do kubectl --namespace monitoring port-forward svc/jaeger-query 16686; done'
+alias prom='while true; do kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090; done'
+alias am='while true; do kubectl --namespace monitoring port-forward svc/alertmanager-main 9093; done'
+alias grafana='while true; do kubectl --namespace monitoring port-forward svc/grafana 3000; done'
+alias argo='while true; do kubectl port-forward svc/argocd-server -n argocd 8080:443; done'
+alias mkp='minikube ip && kubectl -n istio-system get service istio-ingressgateway -o jsonpath={.spec.ports[?(@.name==\"http2\")].nodePort}'
+alias sshsandbox01='sudo ssh -A  -L  443:10.1.120.84:443 admin@jumpman01.sandbox01.lamdax-sandbox.com -N'
 # Kubernetes stuff
 source <(kubectl completion bash)
 source <(kops completion bash)
-if [ -f $(brew --prefix)/etc/bash_completion ]; then 
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
 . $(brew --prefix)/etc/bash_completion
 fi
 
@@ -60,4 +70,27 @@ parse_git_branch() {
 
 # Prompt
 export PS1="$BASH_REDBOLD\t ${BASH_BLUE}\u@\h ${BASH_PURPLE}branch:\$(parse_git_branch) ${BASH_YELLOW}kube-context:\$(__kube_ps1)\n${BASH_WHITEBOLD}\w${BASH_RESETCOLOR}$ "
-PATH="/usr/local/opt/curl/bin:~/istio-1.5.4/bin:$PATH"
+PATH="/usr/local/opt/curl/bin:~/istio-1.6.0/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:~/flutter/bin/:$PATH"
+
+export PATH
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/opt/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
